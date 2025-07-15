@@ -1,4 +1,4 @@
-    enum Funcao
+public enum Funcao
 {
     Read,
     Write,
