@@ -1,6 +1,7 @@
 public class ObjetoDado
 {
     private string _filepath; // nome/caminho do txt
+    public string Name { get; set; }
     public int TSRead { get; set; }
     public int TSWrite { get; set; }
 
@@ -9,6 +10,7 @@ public class ObjetoDado
         _filepath = $"dados/{dado}.txt";
         TSRead = 0;
         TSWrite = 0;
+        Name = dado;
     }
 
     public void Reset() //Usado quando um escalonamento termina e vamos iniciar agora

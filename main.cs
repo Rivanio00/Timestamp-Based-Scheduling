@@ -12,52 +12,36 @@ class Program
         string[] In = FileOps.ReadIn(inPath);
 
         //Criar os objetos
-        string[] dados = In[0].Split(',', StringSplitOptions.TrimEntries); //ESSE É O VETOR QUE CONTEM AQUELA ESTRUTURA <ID-dado, TS-Read, TS-Write>
         List<ObjetoDado> objetos = new List<ObjetoDado>();
-        foreach (var dado in dados)
-        {
-            ObjetoDado objeto = new ObjetoDado(dado);
-            objetos.Add(objeto);
-        }
-
-        foreach (var objeto in objetos)
-        {
-            Console.WriteLine(objeto.ToString());
-        }
+        objetos = InOps.CreateObjetos(In);
 
         //Criar as transações
-        int[] timestamps = In[2].Split(',', StringSplitOptions.TrimEntries)
-                        .Select(int.Parse)
-                        .ToArray();
         List<Transacao> transacoes = new List<Transacao>();
-        for (int i = 0; i < timestamps.Length; i++)
-        {
-            Transacao transacao = new Transacao((i + 1), timestamps[i]);
-            transacoes.Add(transacao);
-        }
-
-        foreach (var transacao in transacoes)
-        {
-            Console.WriteLine(transacao.ToString());
-        }
+        transacoes = InOps.CreateTransacoes(In);
 
         //Criar os escalonamentos
         List<Escalonamento> escalonamentos = new List<Escalonamento>();
-        for (int i = 3; i < In.Length; i++)
-        {
-            string linha = In[i];
-            string passos = linha.Substring(linha.IndexOf('-') + 1); // remove o "E_i-"
-            Escalonamento escalonamento = new Escalonamento((i - 2), passos);
-            escalonamentos.Add(escalonamento);
-        }
+        escalonamentos = InOps.CreateEscalonamentos(In, transacoes, objetos);
 
+        // printar as listas de operações de cada escalonamento
         foreach (var escalonamento in escalonamentos)
         {
-            Console.WriteLine(escalonamento.ToString());
+            Console.WriteLine($"Escalonamento {escalonamento.Id}:");
+
+            foreach (var operacao in escalonamento.Operacoes)
+            {
+                string func = operacao.Func.ToString();
+                int transacaoId = operacao.Transacao.Id;
+                string dadoNome = operacao.Dado?.Name ?? "N/A";
+
+                Console.WriteLine($" - {func} T{transacaoId} {dadoNome}");
+            }
+
+            Console.WriteLine(); // linha em branco entre os escalonamentos
         }
 
+
         //Rodar os escalonamentos
-        
 
         //Escrever o out.txt
 

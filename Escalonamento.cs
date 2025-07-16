@@ -1,11 +1,11 @@
 public class Escalonamento
 {
-    public Operacao[] operaoes;
+    public List<Operacao> Operacoes;
     private int _momento;
     public string[] Passos;
     public int Id;
 
-    public Escalonamento(int id, string passos)
+    public Escalonamento(int id, string passos, List<Transacao> transacoes, List<ObjetoDado> objetos)
     {
         Passos = passos.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         Id = id;
@@ -14,6 +14,7 @@ public class Escalonamento
         {
             Console.WriteLine(step);
         }
+        Operacoes = InOps.CreateOperacoes(Passos, transacoes, objetos);
     }
     public override string ToString() =>
     $"Escalonamento: Id={Id}, Passos={string.Join(" ", Passos)}, Momento={_momento}";
