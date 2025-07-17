@@ -1,13 +1,13 @@
 public class ObjetoDado
 {
-    private string _filepath; // nome/caminho do txt
+    public string filepath; // nome/caminho do txt
     public string Name { get; set; }
     public int TSRead { get; set; }
     public int TSWrite { get; set; }
 
     public ObjetoDado(string dado)
     {
-        _filepath = $"dados/{dado}.txt";
+        filepath = $"dados/{dado}.txt";
         TSRead = 0;
         TSWrite = 0;
         Name = dado;
@@ -19,5 +19,5 @@ public class ObjetoDado
         TSWrite = 0;
     }
 
-    public override string ToString() => $"Objeto: {_filepath}";
+    public override string ToString() => $"Objeto: {filepath}";
 }

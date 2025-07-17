@@ -1,6 +1,6 @@
 public class Escalonamento
 {
-    public List<Operacao> Operacoes;
+    public List<Operacao> Operacoes { get; set; }
     private int _momento;
     public string[] Passos;
     public int Id;
@@ -18,5 +18,26 @@ public class Escalonamento
     }
     public override string ToString() =>
     $"Escalonamento: Id={Id}, Passos={string.Join(" ", Passos)}, Momento={_momento}";
+
+    public string TestarEscalonamento(List<ObjetoDado> objetos)
+    {
+        string Out;
+
+        foreach (var operacao in Operacoes)
+        {
+            if (operacao.Run(objetos, _momento, Id) == true)
+            {
+                _momento++;
+            }
+            else
+            {
+                Out = "E_" + Id + "-ROLLBACK-" + _momento;
+                return Out;
+            }
+        }
+
+        Out = "E_" + Id + "-OK";
+        return Out;
+    }
 
 }

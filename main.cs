@@ -23,7 +23,7 @@ class Program
         List<Escalonamento> escalonamentos = new List<Escalonamento>();
         escalonamentos = InOps.CreateEscalonamentos(In, transacoes, objetos);
 
-        // printar as listas de operações de cada escalonamento
+        // Printar as listas de operações de cada escalonamento
         foreach (var escalonamento in escalonamentos)
         {
             Console.WriteLine($"Escalonamento {escalonamento.Id}:");
@@ -37,13 +37,24 @@ class Program
                 Console.WriteLine($" - {func} T{transacaoId} {dadoNome}");
             }
 
-            Console.WriteLine(); // linha em branco entre os escalonamentos
+            Console.WriteLine();
         }
 
 
-        //Rodar os escalonamentos
+        //Testar os escalonamentos
+        List<string> Out = new List<string>();
+        foreach (var escalonamento in escalonamentos)
+        {
+            Out.Add(escalonamento.TestarEscalonamento(objetos));
+            //Limpa os objetos após o escalonamento:
+            foreach (var objeto in objetos)
+            {
+                objeto.Reset();
+            }
+        }
 
-        //Escrever o out.txt
+        string outPath = "media/out.txt";
+        File.WriteAllLines(outPath, Out);
 
     }
 }
