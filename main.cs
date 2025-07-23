@@ -7,6 +7,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        FileOps.CleanData();
         //Ler in.txt
         string inPath = "media/in.txt";
         string[] In = FileOps.ReadIn(inPath);
@@ -33,8 +34,14 @@ class Program
                 string func = operacao.Func.ToString();
                 int transacaoId = operacao.Transacao.Id;
                 string dadoNome = operacao.Dado?.Name ?? "N/A";
-
-                Console.WriteLine($" - {func} T{transacaoId} {dadoNome}");
+                if (func != "Commit")
+                {
+                    Console.WriteLine($" - {func} T{transacaoId} {dadoNome}");
+                }
+                else
+                {
+                    Console.WriteLine($"{func}");
+                }
             }
 
             Console.WriteLine();

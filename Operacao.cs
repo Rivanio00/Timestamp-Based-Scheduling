@@ -23,28 +23,23 @@ public class Operacao
         {
             foreach (var objeto in objetos)
             {
-                if (objeto.TSRead == Transacao.Timestamp)
-                {
                     objeto.TSRead = 0;
-                    FileOps.WriteObjeto(objeto.filepath, Id, "Commit", momento);
-                }
-                if (objeto.TSWrite == Transacao.Timestamp)
-                {
                     objeto.TSWrite = 0;
-                    FileOps.WriteObjeto(objeto.filepath, Id, "Commit", momento);
-                }
-            }
+            } 
             return true;
         }
         else if (Func == Funcao.Read)
         {
-            if (Dado.TSWrite > Transacao.Timestamp)
+            if (Dado?.TSWrite > Transacao.Timestamp)
             {
                 return false;
             }
             else
             {
-                Dado.TSRead = Transacao.Timestamp;
+                if (Dado.TSRead < Transacao.Timestamp)
+                {
+                    Dado.TSRead = Transacao.Timestamp;
+                }
             }
             FileOps.WriteObjeto(Dado.filepath, Id, "Read", momento);
         }
@@ -53,7 +48,7 @@ public class Operacao
             if (Transacao.Timestamp < Dado.TSRead || Transacao.Timestamp < Dado.TSWrite)
             {
                 return false;
-            }
+            } 
             else
             {
                 Dado.TSWrite = Transacao.Timestamp;

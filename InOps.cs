@@ -3,6 +3,8 @@ public class InOps
     public static List<ObjetoDado> CreateObjetos(string[] In)
     {
         string[] dados = In[0].Split(',', StringSplitOptions.TrimEntries);
+        int ultimaPosicao = dados.Length - 1;
+        dados[ultimaPosicao] = dados[ultimaPosicao].Remove(1);
         List<ObjetoDado> objetos = new List<ObjetoDado>(); //ESSE É O VETOR QUE CONTEM AQUELA ESTRUTURA <ID-dado, TS-Read, TS-Write>
         foreach (var dado in dados)
         {
@@ -19,10 +21,15 @@ public class InOps
 
     public static List<Transacao> CreateTransacoes(string[] In)
     {
-        int[] timestamps = In[2].Split(',', StringSplitOptions.TrimEntries)
+        string[] timestampsStr = In[2].Split(',', StringSplitOptions.TrimEntries);
+        int ultimaPosicao = timestampsStr.Length - 1;
+        timestampsStr[ultimaPosicao] = timestampsStr[ultimaPosicao].Remove(1);
+        int[] timestamps = timestampsStr
                         .Select(int.Parse)
                         .ToArray();
         List<Transacao> transacoes = new List<Transacao>();
+        Transacao transacaoCommit = new Transacao(-1, -1);
+        transacoes.Add(transacaoCommit);
         for (int i = 0; i < timestamps.Length; i++)
         {
             Transacao transacao = new Transacao((i + 1), timestamps[i]);
@@ -66,9 +73,9 @@ public class InOps
         // Transação sempre vem depois da função, antes do parêntese
             string idStr = (indexOpen != -1)
             ? passo.Substring(1, indexOpen - 1)
-            : passo.Substring(1);
+            : passo;
 
-        int transacaoId = int.Parse(idStr);
+        int transacaoId = (indexOpen != -1) ? int.Parse(idStr) : -1;
         Transacao transacao = transacoes.First(t => t.Id == transacaoId);
 
         // Detectar tipo da operação
