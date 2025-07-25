@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Linq;
-// VOCÊ DEVE INCLUIR SEUS NAMESPACES AQUI, CASO NECESSÁRIO!!!
+
 class Program
 {
     static void Main(string[] args)
